@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include "TSTNode.cpp"
 
 /**
  *  The class for a dictionary ADT, implemented as a trie
@@ -49,6 +50,7 @@ public:
 
 private:
   // Add your own data members and methods here
+  TSTNode* root;
 };
 
 #endif // DICTIONARY_TRIE_HPP

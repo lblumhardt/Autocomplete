@@ -7,7 +7,7 @@
 #define DICTIONARY_BST_HPP
 
 #include <string>
-
+#include <set>
 /**
  *  The class for a dictionary ADT, implemented as a BST
  * When you implement this class, you MUST use a balanced binary
@@ -33,6 +33,7 @@ public:
 
 private:
   // Add your own data members and methods here
+  std::set<std::string> bst;
 };
 
 #endif // DICTIONARY_BST_HPP
