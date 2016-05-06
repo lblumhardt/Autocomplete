@@ -18,7 +18,7 @@ public:
   : left(left), center(center), right(right), 
   key(key), freq(freq), isword(isword) {}
 
-  bool operator<(const TSTNode& other);
+ // bool operator<(const TSTNode& other);
 private:
 };
 
