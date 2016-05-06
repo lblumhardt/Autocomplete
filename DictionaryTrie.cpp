@@ -22,11 +22,14 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   //set the root while the dictionary is currently empty
   if(root == nullptr) {
     root = new TSTNode(word[i], 0, 0, 0, 0, false);
+    cout << "assigned root to " << word[i] << " \n";
     curr = root;
     i++;
     while(i < word.length()) {
       curr->center = new TSTNode(word[i], 0, 0, 0, 0, false);
+      cout << "appending " << word[i] << " to center root branch \n";
       curr = curr->center;
+      i++;
     }
     curr->isword = true;
     curr->freq = freq;
@@ -88,7 +91,24 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
 /* Return true if word is in the dictionary, and false otherwise */
 bool DictionaryTrie::find(std::string word) const
 {
-  return false;
+  TSTNode* curr = root;
+  unsigned int i = 0;
+  while(i < word.length()) {
+    if(curr == nullptr) {
+      return false;
+    }
+    else if(curr->key < word[i]) {
+      curr = curr->right;
+    }
+    else if(word[i] < curr->key) {
+      curr = curr->left;
+    }
+    else {
+      curr = curr->center;
+      i++;
+    }
+  }
+  return curr->isword;
 }
 
 /* Return up to num_completions of the most frequent completions
