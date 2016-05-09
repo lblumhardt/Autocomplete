@@ -20,10 +20,18 @@ int main() {
     cout << "nice we found apple \n";
   }  
  */
-  tst.insert("cat", 5);
-  tst.insert("dog", 10);
+  tst.insert("basketball", 5);
+  tst.insert("asterisk", 10);
+  tst.insert("basket", 1);
+  tst.insert("application", 1);
+  tst.insert("a", 1);
+  tst.insert("app", 1);
+  tst.insert("gugglebee", 1);
+  tst.insert("waldos", 1);
+  tst.insert("are you not entertained", 1);
+  tst.insert("never gonna give you up",1);
   
-  if(tst.insert("cat", 50)){
+  if(tst.insert("basket", 50)){
     cout << "reinsert is still a problem \n";
   }
   //input.close();

@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include "TSTNode.cpp"
+#include "MWTNode.cpp"
 
 /**
  *  The class for a dictionary ADT, implemented as a trie
@@ -48,10 +49,13 @@ public:
   /* Destructor */
   ~DictionaryTrie();
 
-  void deleteAll(TSTNode* curr);
+  void deleteAll(MWTNode* curr);
+
+  bool recursiveInsert(std::string word, unsigned int freq, TSTNode* root);
 private:
   // Add your own data members and methods here
-  TSTNode* root;
+  //TSTNode* root;
+  MWTNode* root;
 };
 
 #endif // DICTIONARY_TRIE_HPP
