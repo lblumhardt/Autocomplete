@@ -3,7 +3,7 @@
 
 /* Create a new Dictionary that uses a Trie back end */
 DictionaryTrie::DictionaryTrie() {
-  root = nullptr;
+  root = new TSTNode('?', 0, 0, 0, 0, false);
 }
 
 /* Insert a word with its frequency into the dictionary.
@@ -20,7 +20,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   TSTNode* curr;
   unsigned int i = 0;
   //set the root while the dictionary is currently empty
-  if(root == nullptr) {
+  if(root->key == '?') {
     root = new TSTNode(word[i], 0, 0, 0, 0, false);
     cout << "assigned root to " << word[i] << " \n";
     curr = root;
