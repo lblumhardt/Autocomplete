@@ -27,6 +27,9 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   //trying MWTrie now 
   if(root == nullptr) {
     root = new MWTNode();
+    cout << "root was null \n";
+  }
+
     curr = root;
     while(i < word.length()) {
       currvec = curr->vec;
@@ -37,17 +40,25 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       else {
         index = temp - 97;
       }
-      currvec[index] = new MWTNode();
-      curr = currvec[index];
-      i++; 
+      if(currvec[index] == nullptr) {
+ 
+        currvec[index] = new MWTNode();
+        curr = currvec[index];
+        i++; 
+      } 
+    }
+    if(curr->isword) {
+      return false;
     }
     curr->isword = true;
+    curr->freq = freq;
     return true;
-  }
- 
+}
+/* 
   curr = root;
   while(i < word.length()) {
     temp = word[i];
+
     if(temp == 32) {
       index = 26;
     }
@@ -56,6 +67,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     }  
     currvec = curr->vec;
     if(currvec[index] == nullptr) {
+      cout << index << " we had a nullpointer here \n";
       currvec[index] = new MWTNode();
       curr = currvec[index];
     } 
@@ -69,11 +81,12 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     return false;
   }
   
+  cout << "I assigned this node to true \n"; 
   curr->isword = true; 
-    
+  curr->freq = freq;  
   return true;
 
-
+*/
 
 
 /*  TSTNode* curr;
@@ -241,7 +254,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   return false;
 */
  // return recursiveInsert(word, freq, root);
-}
+
 
 bool DictionaryTrie::recursiveInsert(std::string word, unsigned int freq, TSTNode* root) {
 
