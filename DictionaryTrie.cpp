@@ -81,6 +81,8 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       continue;
     }
   } 
+  cout << "p is " << p->key << "\n";
+  cout << "curr is " << curr->key << "\n";
   if(wasInserted == true) {
     curr->isword = true;
     curr->freq = freq;
