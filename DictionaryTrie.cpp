@@ -3,7 +3,7 @@
 
 /* Create a new Dictionary that uses a Trie back end */
 DictionaryTrie::DictionaryTrie() {
-
+  root = nullptr;
 }
 
 /* Insert a word with its frequency into the dictionary.
@@ -111,6 +111,16 @@ bool DictionaryTrie::find(std::string word) const
   return curr->isword;
 }
 
+void DictionaryTrie::deleteAll(TSTNode* curr) {
+  if(curr == nullptr) {
+    return;
+  }
+  deleteAll(curr->right);
+  deleteAll(curr->center);
+  deleteAll(curr->left);
+  delete curr;
+}
+
 /* Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
@@ -128,4 +138,6 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
 }
 
 /* Destructor */
-DictionaryTrie::~DictionaryTrie(){}
+DictionaryTrie::~DictionaryTrie(){
+  deleteAll(root);
+}

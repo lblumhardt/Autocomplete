@@ -8,12 +8,17 @@
 
 int main() {
   std::filebuf fb;
-  fb.open("myDict.txt", std::ios::in);
+  fb.open("shuffled_freq_dict.txt", std::ios::in);
   std::istream input(&fb);
   DictionaryTrie tst;
   DictionaryHashtable hashtable; 
-  Utils::load_dict(tst, input);
-  
+  DictionaryBST bst;
+  Utils::load_dict(bst, input);
+  cout << "inserting went fine \n"; 
+  if(bst.find("if it was made")) {
+    cout << "nice we found apple \n";
+  }  
+ 
   //input.close();
   return 1;
 }

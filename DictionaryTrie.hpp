@@ -48,6 +48,7 @@ public:
   /* Destructor */
   ~DictionaryTrie();
 
+  void deleteAll(TSTNode* curr);
 private:
   // Add your own data members and methods here
   TSTNode* root;
