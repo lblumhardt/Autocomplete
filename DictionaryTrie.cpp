@@ -37,7 +37,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   }
   
   
-  TSTNode* p;
+  //TSTNode* p;
   bool wasInserted = false;
   i = 0;
   curr = root;
@@ -45,7 +45,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   while(i < word.length()) {
     if(word[i] == curr->key){
       cout << "EQUALS!! curr->key is " << curr->key << " and word[i] is " << word[i] << "\n"; 
-      p = curr;
+      //p = curr;
       i++;
       if(i >= word.length()) {
         break;
@@ -66,7 +66,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       continue;
     }
     //go to the right
-    if(curr->key < word[i]) {
+    else if(curr->key < word[i]) {
       if(curr->right == nullptr) {
         cout << "I thought the right was null so i inserted " << word[i] << "to it \n";
         curr->right = new TSTNode(word[i], 0, 0, 0, 0, false); 
@@ -88,7 +88,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       curr = curr->left;
       continue;
     }
-
+/*
     //go down the center
     else if(word[i] == curr->key){
       cout << "EQUALS!! curr->key is " << curr->key << " and word[i] is " << word[i] << "\n"; 
@@ -109,7 +109,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       wasInserted = true;
       continue;
 
-    }
+    }*/
   } 
   //cout << "p is " << p->key << "\n";
   //cout << "curr is " << curr->key << "\n";
@@ -120,10 +120,10 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     return true;
   }  
   if(curr->isword) {
-    //cout << "the prev node was a word and therefore insert returned false \n";
+    cout << "the prev node was a word and therefore insert returned false \n";
     return false;
   }
-  //cout << "the prev node wasn't a word and therefore insert returned true (basket) \n";
+  cout << "the prev node wasn't a word and therefore insert returned true (basket) \n";
   curr->isword = true;
   curr->freq = freq;
   return true;
