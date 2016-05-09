@@ -37,7 +37,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   }
   
   
-
+  TSTNode* p;
   bool wasInserted = false;
   i = 0;
   curr = root;
@@ -75,6 +75,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
 
     //go down the center
     else {
+      p = curr;
       curr = curr->center;
       i++;
       continue;
@@ -85,7 +86,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     curr->freq = freq;
     return true;
   }  */
-  if(curr->isword) {
+  if(p->isword) {
     return false;
   }
   curr->isword = true;
