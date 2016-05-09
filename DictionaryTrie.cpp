@@ -81,18 +81,19 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       continue;
     }
   } 
-  //cout << "p is " << p->key << "\n";
-  //cout << "curr is " << curr->key << "\n";
+  cout << "p is " << p->key << "\n";
+  cout << "curr is " << curr->key << "\n";
   if(wasInserted == true) {
     curr->isword = true;
+    cout << "was inserted was true so therefore true \n";
     curr->freq = freq;
     return true;
   }  
   if(curr->isword) {
-    cout << "the prev node was a word and therefore insert returned false \n";
+    //cout << "the prev node was a word and therefore insert returned false \n";
     return false;
   }
-  cout << "the prev node wasn't a word and therefore insert returned true (basket) \n";
+  //cout << "the prev node wasn't a word and therefore insert returned true (basket) \n";
   curr->isword = true;
   curr->freq = freq;
   return true;
