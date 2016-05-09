@@ -81,11 +81,11 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       continue;
     }
   } 
- /* if(wasInserted == true) {
+  if(wasInserted == true) {
     curr->isword = true;
     curr->freq = freq;
     return true;
-  }  */
+  }  
   if(p->isword) {
     return false;
   }
