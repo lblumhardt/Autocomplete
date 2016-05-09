@@ -88,7 +88,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     curr->freq = freq;
     return true;
   }  
-  if(p->isword) {
+  if(curr->isword) {
     cout << "the prev node was a word and therefore insert returned false \n";
     return false;
   }
