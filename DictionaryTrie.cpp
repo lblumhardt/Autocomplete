@@ -132,6 +132,7 @@ void DictionaryTrie::deleteAll(TSTNode* curr) {
   delete curr;
 }
 
+
 /* Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
