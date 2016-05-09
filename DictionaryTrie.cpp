@@ -80,12 +80,17 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       continue;
     }
   } 
-  if(wasInserted == true) {
+ /* if(wasInserted == true) {
     curr->isword = true;
     curr->freq = freq;
     return true;
-  } 
-  return false;
+  }  */
+  if(curr->isword) {
+    return false;
+  }
+  curr->isword = true;
+  curr->freq = freq;
+  return true;
 }
 
 /* Return true if word is in the dictionary, and false otherwise */
