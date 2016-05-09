@@ -41,19 +41,22 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   bool wasInserted = false;
   i = 0;
   curr = root;
+  cout << "the root is still " << root->key << "\n";
   while(i < word.length()) {
     //if center pointer is null, insert downwards
-    if(curr->center == nullptr) {
+   /* if(curr->center == nullptr) {
+      cout << "I thought center was null so i assigned " << word[i] << "to it \n";
       curr->center = new TSTNode(word[i], 0, 0, 0, 0, false);
       curr = curr->center;
       i++;
       wasInserted = true;
       continue;
     }
-
+ */
     //go to the right
-    else if(curr->key < word[i]) {
+    if(curr->key < word[i]) {
       if(curr->right == nullptr) {
+        cout << "I thought the right was null so i inserted " << word[i] << "to it \n";
         curr->right = new TSTNode(word[i], 0, 0, 0, 0, false); 
         i++; 
         wasInserted = true;   
@@ -65,6 +68,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     //go to the left
     else if(word[i] < curr->key) {
       if(curr->left == nullptr) {
+        cout << "I thought the left was null so i inserted " << word[i] << "to it \n";
         curr->left = new TSTNode(word[i], 0, 0, 0, 0, false);
         i++;
         wasInserted = true;
@@ -74,15 +78,29 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     }
 
     //go down the center
-    else {
+    else if(word[i] == curr->key){
+      cout << "EQUALS!! curr->key is " << curr->key << " and word[i] is " << word[i] << "\n"; 
       p = curr;
-      curr = curr->center;
       i++;
+      if(i >= word.length()) {
+        break;
+      }
+      curr = curr->center;
+     
       continue;
     }
+    else if(curr->center == nullptr) {
+      cout << "I thought center was null so i assigned " << word[i] << "to it \n";
+      curr->center = new TSTNode(word[i], 0, 0, 0, 0, false);
+      curr = curr->center;
+      i++;
+      wasInserted = true;
+      continue;
+
+    }
   } 
-  cout << "p is " << p->key << "\n";
-  cout << "curr is " << curr->key << "\n";
+  //cout << "p is " << p->key << "\n";
+  //cout << "curr is " << curr->key << "\n";
   if(wasInserted == true) {
     curr->isword = true;
     cout << "was inserted was true so therefore true \n";

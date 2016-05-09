@@ -12,13 +12,20 @@ int main() {
   std::istream input(&fb);
   DictionaryTrie tst;
   DictionaryHashtable hashtable; 
+
   DictionaryBST bst;
-  Utils::load_dict(bst, input);
+ /* Utils::load_dict(tst, input);
   cout << "inserting went fine \n"; 
-  if(bst.find("if it was made")) {
+  if(tst.find("if it was made")) {
     cout << "nice we found apple \n";
   }  
- 
+ */
+  tst.insert("cat", 5);
+  tst.insert("dog", 10);
+  
+  if(tst.insert("cat", 50)){
+    cout << "reinsert is still a problem \n";
+  }
   //input.close();
   return 1;
 }
