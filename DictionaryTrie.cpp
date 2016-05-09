@@ -43,8 +43,21 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   curr = root;
   cout << "the root is still " << root->key << "\n";
   while(i < word.length()) {
+    if(word[i] == curr->key){
+      cout << "EQUALS!! curr->key is " << curr->key << " and word[i] is " << word[i] << "\n"; 
+      p = curr;
+      i++;
+      if(i >= word.length()) {
+        break;
+      }
+      curr = curr->center;
+     
+      continue;
+    }
+
+
     //if center pointer is null, insert downwards
-   /* if(curr->center == nullptr) {
+    else if(curr->center == nullptr) {
       cout << "I thought center was null so i assigned " << word[i] << "to it \n";
       curr->center = new TSTNode(word[i], 0, 0, 0, 0, false);
       curr = curr->center;
@@ -52,7 +65,6 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       wasInserted = true;
       continue;
     }
- */
     //go to the right
     if(curr->key < word[i]) {
       if(curr->right == nullptr) {
