@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 #include "TSTNode.cpp"
-#include "MWTNode.hpp"
+//#include "MWTNode.hpp"
 
 /**
  *  The class for a dictionary ADT, implemented as a trie
@@ -19,6 +19,21 @@
  */
 class DictionaryTrie
 {
+  class MWTNode {
+
+  public:
+  
+    vector<MWTNode*> vec = vector<MWTNode*>(27, (MWTNode*)0);
+
+    unsigned int freq;
+    bool isword;
+    int belowfreq;
+
+    MWTNode(int freq);
+  };
+
+
+
 public:
 
   /* Create a new Dictionary that uses a Trie back end */

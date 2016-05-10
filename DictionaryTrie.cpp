@@ -1,6 +1,13 @@
 #include "util.hpp"
 #include "DictionaryTrie.hpp"
 
+
+DictionaryTrie::MWTNode::MWTNode(int freq){
+    for(int i=0; i<27; i++) {
+      vec[i] = (MWTNode*)0;
+    }
+  }
+
 /* Create a new Dictionary that uses a Trie back end */
 DictionaryTrie::DictionaryTrie() {
  // root = new TSTNode('?', 0, 0, 0, 0, false);

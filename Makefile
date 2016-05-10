@@ -6,7 +6,7 @@ LDFLAGS=-g
 
 all: benchtrie util.o
 
-benchtrie: util.o DictionaryTrie.o DictionaryBST.o DictionaryHashtable.o MWTNode.o
+benchtrie: util.o DictionaryTrie.o DictionaryBST.o DictionaryHashtable.o 
 
 DictionaryTrie.o: DictionaryTrie.hpp
 
@@ -17,7 +17,7 @@ DictionaryHashtable.o: DictionaryHashtable.hpp
 util.o: util.hpp
 
 checkpointTester.o: checkpointTester.cpp
-	g++ -g -Wall -std=c++11 checkpointTester.cpp MWTNode.cpp
+	g++ -g -Wall -std=c++11 checkpointTester.cpp 
 
 clean:
 	rm -f benchtrie *.o core* *~
