@@ -16,6 +16,9 @@ DictionaryHashtable.o: DictionaryHashtable.hpp
 
 util.o: util.hpp
 
+checkpointTester.o: checkpointTester.cpp
+	g++ -g -Wall -std=c++11 checkpointTester.cpp MWTNode.cpp
+
 clean:
 	rm -f benchtrie *.o core* *~
 

@@ -22,37 +22,59 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   unsigned int i = 0;
   unsigned char temp;
   int index;
-  vector<MWTNode*> currvec;
+  //vector<MWTNode*> currvec;
   MWTNode* curr;
   //trying MWTrie now 
   if(root == nullptr) {
-    root = new MWTNode();
-    cout << "root was null \n";
+    root = new MWTNode(0);
+    //cout << "root was null \n";
   }
 
-    curr = root;
-    while(i < word.length()) {
-      currvec = curr->vec;
-      temp = word[i];
-      if(temp == 32) {
-        index = 26;
-      } 
-      else {
-        index = temp - 97;
-      }
-      if(currvec[index] == nullptr) {
- 
-        currvec[index] = new MWTNode();
-        curr = currvec[index];
-        i++; 
-      } 
+  curr = root;
+  if(!curr) {
+    cout << "ERROR ROOT WAS STILL NULL \n";
+  }
+  
+  while(i < word.length()) {
+    
+    temp = word[i];
+    if(temp == 32) {
+      index = 26;
+    } 
+    else {
+      index = temp - 97;
     }
-    if(curr->isword) {
-      return false;
+    if(curr->vec[index] == nullptr) {
+      //cout << "pointer at index " << index << " was null \n";
+      curr->vec[index] = new MWTNode(0);
+      /*auto itr = currvec.begin();
+      itr = itr + index;
+      currvec.insert(itr, new MWTNode(0)); */
+      curr = curr->vec[index];
+      i++;
+      continue;
+     // i++; 
     }
-    curr->isword = true;
-    curr->freq = freq;
-    return true;
+    if(curr->vec[index] == nullptr) {
+      //cout << "we shouldn't see this as often as the other \n";
+    }
+    else {
+      //cout << "will was right! \n";
+    }
+    curr = curr->vec[index];
+    i++; 
+  } 
+  if(curr->isword) {
+    return false;
+  }
+  for(int j=0; j<27; j++) {
+    if(root->vec[j] != nullptr) {
+      //cout << j << " index was not nullptr \n";
+    }
+  }  
+  curr->isword = true;
+  curr->freq = freq;
+  return true;
 }
 /* 
   curr = root;

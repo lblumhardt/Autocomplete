@@ -7,19 +7,19 @@ class MWTNode {
 
 public:
   
-  vector<MWTNode*> vec = vector<MWTNode*>(27, nullptr);
+  vector<MWTNode*> vec = vector<MWTNode*>(27, (MWTNode*)0);
 
   unsigned int freq;
   bool isword;
   int belowfreq;
 
-  MWTNode() {
-
+  MWTNode(int freq);
+/*
   for(int i = 0; i < 27; i++) {
     vec[i] = nullptr;
   }
+*/
 
-}
 
  // bool operator<(const TSTNode& other);
 private:

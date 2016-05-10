@@ -20,6 +20,7 @@ int main() {
     cout << "nice we found apple \n";
   }  
  */
+/*
   tst.insert("basketball", 5);
   tst.insert("asterisk", 10);
   tst.insert("basket", 1);
@@ -33,6 +34,15 @@ int main() {
   
   if(tst.insert("basket", 50)){
     cout << "reinsert is still a problem \n";
+  }
+  */
+  tst.insert("a", 1);
+  tst.insert("ab", 1);
+  if(tst.insert("a", 1)) {
+    cout << "reinsert a failed \n";
+  }
+  if(tst.insert("ab",1)) {
+    cout << "reinsert ab failed \n";
   }
   //input.close();
   return 1;

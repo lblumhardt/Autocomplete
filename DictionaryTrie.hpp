@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 #include "TSTNode.cpp"
-#include "MWTNode.cpp"
+#include "MWTNode.hpp"
 
 /**
  *  The class for a dictionary ADT, implemented as a trie
