@@ -27,13 +27,16 @@ bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, s
   return p1.first->maxfreq > p2.first->maxfreq;
 }
 
-
+/*
 //compare operator used in potWords priority queue. Should act as a min heap for 
 //frequencies
 bool DictionaryTrie::potWordsComp::operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2) {
   return p1.first < p2.first;
-}
+} */
 
+bool DictionaryTrie::MWTNode::operator<(const MWTNode& other) {
+  return freq < other.freq;
+}
 
 DictionaryTrie::MWTNode::MWTNode(int freq){
     for(int i=0; i<27; i++) {
@@ -318,12 +321,12 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   MWTNode* prefixNode = curr; 
   max = curr->maxfreq;
-  std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
+  std::priority_queue<std::pair<MWTNode*, std::string>, std::vector<std::pair<MWTNode*, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
   
   //check if prefix is one of the most frequent words
   if(curr->isword) {
-    potWords.push(std::make_pair(curr->freq, prefix));
+    potWords.push(std::make_pair(curr, prefix));
   }
 
   for(int i=0; i < 27; i++) {
@@ -347,7 +350,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
       }
     }
     if(currPair.first->isword) {
-      potWords.push(std::make_pair(currPair.first->freq, currPair.second));
+      potWords.push(std::make_pair(currPair.first, currPair.second));
     }
   }
 

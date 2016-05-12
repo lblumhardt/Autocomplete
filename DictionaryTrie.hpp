@@ -37,6 +37,8 @@ class DictionaryTrie
     int belowfreq;
     int maxfreq;
 
+    bool operator<(const MWTNode& other);
+
     MWTNode(int freq);
   };
 
@@ -50,8 +52,12 @@ class DictionaryTrie
 
   class potWordsComp {
     public:
-  
-      bool operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2);
+      bool operator()(std::pair<MWTNode*, std::string> p1, std::pair<MWTNode*, std::string> p2) const {
+        
+        return p1.first < p2.first;
+      }
+/*
+      bool operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2); */
   };
 
 

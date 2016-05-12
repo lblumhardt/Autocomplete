@@ -20,6 +20,7 @@ int main() {
     cout << "nice we found apple \n";
   }  
   tst.predictCompletions("for", 50);
+  tst.predictCompletions("app", 10);
 /*
 
   tst.insert("basketball", 5);
