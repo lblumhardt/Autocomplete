@@ -19,18 +19,41 @@
  */
 class DictionaryTrie
 {
+  class pairComp {
+    
+   public:
+
+      bool operator()(std::pair<int,int> p1, std::pair<int, int> p2);
+  };
+
   class MWTNode {
 
   public:
   
     vector<MWTNode*> vec = vector<MWTNode*>(27, (MWTNode*)0);
-
+    MWTNode* parent;
     unsigned int freq;
     bool isword;
     int belowfreq;
+    int maxfreq;
 
     MWTNode(int freq);
   };
+
+
+  class pathsComp {
+    public:
+    
+      bool operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2);
+  };
+
+
+  class potWordsComp {
+    public:
+  
+      bool operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2);
+  };
+
 
 
 
@@ -67,6 +90,14 @@ public:
   void deleteAll(MWTNode* curr);
 
   bool recursiveInsert(std::string word, unsigned int freq, TSTNode* root);
+
+  int maxBelowFreq(MWTNode* curr);
+
+  unsigned char indexToChar(int index);
+
+  void updateBelowFreq(MWTNode* curr);
+
+  void updateMaxFreq(MWTNode* curr);
 private:
   // Add your own data members and methods here
   //TSTNode* root;

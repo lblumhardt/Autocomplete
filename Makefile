@@ -8,7 +8,7 @@ all: benchtrie util.o
 
 benchtrie: util.o DictionaryTrie.o DictionaryBST.o DictionaryHashtable.o 
 
-DictionaryTrie.o: DictionaryTrie.hpp
+DictionaryTrie.o: DictionaryTrie.cpp
 
 DictionaryBST.o: DictionaryBST.hpp
 
