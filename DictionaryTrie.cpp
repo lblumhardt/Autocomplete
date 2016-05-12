@@ -375,14 +375,14 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
       }
     }
     if(currPair.first->isword) {
-      cout << "puting " << currPair.second << " on the heap \n";
+      //cout << "puting " << currPair.second << " on the heap \n";
       potWords.push(std::make_pair(currPair.first, currPair.second));
     }
   }
 
   for(int i=0; i < num_completions; i++) {
     if(!potWords.empty()) {
-      cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
+      //cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
       words.push_back(potWords.top().second);
       potWords.pop();
     }
