@@ -11,6 +11,9 @@ bool DictionaryTrie::pairComp::operator()(std::pair<int,string> p1, std::pair<in
   //cout << "I'm saying " << p1.first << " < " << p2.first << " is what im comparing \n";
   int p1freq = p1.first;
   int p2freq = p2.first;
+  if(p1freq == p2freq) {
+    return p2.second < p1.second;
+  }
   return p1freq < p2freq;
 }
 
