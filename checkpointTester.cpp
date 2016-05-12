@@ -14,12 +14,13 @@ int main() {
   DictionaryHashtable hashtable; 
 
   DictionaryBST bst;
-/*  Utils::load_dict(tst, input);
+  Utils::load_dict(tst, input);
   cout << "inserting went fine \n"; 
   if(tst.find("if it was made")) {
     cout << "nice we found apple \n";
   }  
- */
+  tst.predictCompletions("for", 50);
+/*
 
   tst.insert("basketball", 5);
   tst.insert("asterisk", 10);
@@ -59,7 +60,7 @@ int main() {
   tst.predictCompletions("ea", 3);
   tst.predictCompletions("ba",2); 
   tst.predictCompletions("g", 100);
-/*  tst.insert("a", 1);
+  tst.insert("a", 1);
   tst.insert("ab", 1);
   if(tst.insert("a", 1)) {
     cout << "reinsert a failed \n";

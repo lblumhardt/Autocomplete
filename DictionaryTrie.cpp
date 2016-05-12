@@ -1,6 +1,7 @@
 #include "util.hpp"
 #include "DictionaryTrie.hpp"
 #include <set>
+#include <stack>
 #include <algorithm>
 #include <iterator>
 #include <queue>
@@ -262,7 +263,6 @@ int DictionaryTrie::maxBelowFreq(MWTNode* curr){
   return max; */
 }
 
-
 unsigned char DictionaryTrie::indexToChar(int index) {
   if(index == 26) {
     return (unsigned char)32;
@@ -321,6 +321,25 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   cout << "the max we searching for is " << max << "\n";
   int limit = num_completions;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// below is the actual thing
   //pq holds the potential Words. it's a min heap of frequencies
   std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
 
@@ -365,40 +384,15 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     
       //if the child is a leaf node, add to potential words (could be optimized)
       if(curr->vec[i]->maxfreq == 0) {
-        cout << "pushing " << currstring << " onto potWords \n";
+        //cout << "pushing " << currstring << " onto potWords \n";
         potWords.push(std::make_pair(curr->vec[i]->freq, currstring));
         continue;
       }
       else {
-        cout << "im inserting " << currstring  << " into paths \n";
+        //cout << "im inserting " << currstring  << " into paths \n";
         auto pear = paths.insert(std::make_pair(curr->vec[i], currstring));
-        cout << "inserted and paths size is now: " << paths.size() << "\n";
-      }
-     
-  
-/*
-     //if the child is a word, check if it should go on potWords or paths
-      else if(curr->vec[i]->isword){
-        if(potWords.size() < num_completions) {
-          cout << "pushing " << currstring << " onto potWords \n";
-          potWords.push(std::make_pair(curr->vec[i]->freq, currstring));
-          continue;
-        }
-        else {
-          if(curr->vec[i]->freq > potWords.top().first) {
-            cout << "pushing " << currstring << " onto potWords \n";
-            potWords.push(std::make_pair(curr->vec[i]->freq, currstring));
-            while(potWords.size() > num_completions) {
-              cout << "popping off something from potWords \n";
-              potWords.pop();
-            }
-            continue;
-          }
-        }
-      }
-      //if not a word, add to paths 
-      cout << "im inserting " << currstring  << " into paths \n";
-      paths.insert(std::make_pair(curr->vec[i], currstring));*/
+        //cout << "inserted and paths size is now: " << paths.size() << "\n";
+      }     
     }  
   }
 
@@ -414,7 +408,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   while(paths.size() > limit) {
     auto deleteitr = paths.end();
     deleteitr--;
-    cout << "im deleting an item from paths \n";
+    //cout << "im deleting an item from paths \n";
     paths.erase(deleteitr);  
   }
   auto quickitr = paths.begin();
@@ -515,40 +509,8 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
       }
       tempChar = indexToChar(i);
       currstring += tempChar;
-      //if child is a word, compare its freq to max 
-    /*  if(p->vec[i]->isword) {
-        //if potential words is empty just slap this one in there
-        if(potWords.size() < num_completions) {
-          cout << "inserting " << currstring << " into potWords \n";
-          potWords.push(std::make_pair(p->vec[i]->freq, currstring));
-          continue;
-        }
-        else {
-          tempPotWordsPair = potWords.top();
-          if(p->freq == max) {
-            firstMaxFound = true;
-            cout << "inserting " << currstring << " into potWords because we found max \n";
-            potWords.push(std::make_pair(p->vec[i]->freq, currstring));
-            limit--;
-            if(limit == 0) {
-              cout << "we broke in optimization #2 \n";
-              break;
-            }
-            auto tempPathPair2 = *(paths.begin());
-            max = tempPathPair2.first->maxfreq;
-            cout << "new max is now " << max << "\n";
-            continue;
-          }
-          //if this node's frequency is greater than the smallest freq in potWords
-          else if(p->vec[i]->freq > tempPotWordsPair.first) {
-            potWords.pop();
-            cout << "inserting " << currstring << " into potWords \n";
-            potWords.push(std::make_pair(p->vec[i]->freq, currstring));
-            continue;
-          }
-        }
-      }*/
-       //is this node an expandable path?
+
+      //is this node an expandable path?
      
       //optimize this~!~!~!~
       if(p->vec[i]->maxfreq != 0) {
@@ -575,31 +537,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
         //cout << "decreasing potWords size \n";
         potWords.pop();
       }
-      
-    /* for(int j=0; j < 27; j++) {
-        
-     
-        if(p->vec[i]->vec[j] != nullptr) { 
-          if(paths.size() < limit) {
-            currstring += indexToChar(j);
-            cout << "i'm inserting " << currstring << " into paths \n";
-            paths.insert(std::make_pair(p->vec[i]->vec[j], currstring));
-            currstring.pop_back();
-          }
-          else {
-            auto itr = paths.end();
-            itr--;
-            if((*itr).first->maxfreq < p->vec[i]->vec[j]->maxfreq) {
-              paths.erase(itr);
-              currstring += indexToChar(j);
-              cout << "i'm inserting " << currstring << " into paths \n";
-              paths.insert(std::make_pair(p->vec[i]->vec[j], currstring));
-              currstring.pop_back();
-            }
-          }
-        } 
-      } */
-     // currstring.pop_back(); 
+      currstring.pop_back(); 
     }
   }
 
