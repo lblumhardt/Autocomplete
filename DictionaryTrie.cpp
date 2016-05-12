@@ -7,9 +7,11 @@
 #include <queue>
 #include <utility>
 
-bool DictionaryTrie::pairComp::operator()(std::pair<int,int> p1, std::pair<int, int> p2) {
+bool DictionaryTrie::pairComp::operator()(std::pair<int,string> p1, std::pair<int, string> p2) const{
   //cout << "I'm saying " << p1.first << " < " << p2.first << " is what im comparing \n";
-  return p1.first < p2.first;
+  int p1freq = p1.first;
+  int p2freq = p2.first;
+  return p1freq < p2freq;
 }
 
 //compare operator going on in the paths double priority queue. Compares nodes'
@@ -83,12 +85,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     root = new MWTNode(0);
     //cout << "root was null \n";
   }
-
-  curr = root;
-  if(!curr) {
-    cout << "ERROR ROOT WAS STILL NULL \n";
-  }
-  
+  curr = root; 
   while(i < word.length()) {
     
     temp = word[i];
@@ -339,7 +336,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
 
 
 
-
+  std::priority_queue<std::pair<int,string>, std::vector<std::pair<int, string>>, pairComp> potWords2;
 
 
 
@@ -352,7 +349,9 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   if(curr->isword) {
     cout << "putting " << prefix << " on the heap \n";
     potWords.push(std::make_pair(curr, prefix));
+    potWords2.push(std::make_pair(curr->freq, prefix));
   }
+
 
   for(int i=0; i < 27; i++) {
     if(curr->vec[i] != nullptr) {
@@ -377,14 +376,15 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     if(currPair.first->isword) {
       //cout << "puting " << currPair.second << " on the heap \n";
       potWords.push(std::make_pair(currPair.first, currPair.second));
+      potWords2.push(std::make_pair(currPair.first->freq, currPair.second));
     }
   }
 
   for(int i=0; i < num_completions; i++) {
-    if(!potWords.empty()) {
+    if(!potWords2.empty()) {
       //cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
-      words.push_back(potWords.top().second);
-      potWords.pop();
+      words.push_back(potWords2.top().second);
+      potWords2.pop();
     }
     else { break; }
   }

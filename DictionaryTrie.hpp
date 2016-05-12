@@ -24,7 +24,7 @@ class DictionaryTrie
     
    public:
 
-      bool operator()(std::pair<int,int> p1, std::pair<int, int> p2);
+      bool operator()(std::pair<int,string> p1, std::pair<int, string> p2) const;
   };
 
   class MWTNode {
