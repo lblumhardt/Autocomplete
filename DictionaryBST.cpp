@@ -1,4 +1,4 @@
-#include "util.hpp"
+//#include "util.hpp"
 #include "DictionaryBST.hpp"
 
 /* Create a new Dictionary that uses a BST back end */
