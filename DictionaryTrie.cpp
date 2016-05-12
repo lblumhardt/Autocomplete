@@ -320,23 +320,57 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   max = prefixNode->maxfreq;
   cout << "the max we searching for is " << max << "\n";
   int limit = num_completions;
+  std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
+  std::stack<std::pair<MWTNode*,std::string>> toCheck;
+  
+  //check if prefix is one of the most frequent words
+  if(curr->isword) {
+    potWords.push(std::make_pair(curr->freq, prefix));
+  }
+
+  for(int i=0; i < 27; i++) {
+    if(curr->vec[i] != nullptr) {
+      currstring = prefix;
+      currstring += indexToChar(i);
+      toCheck.push(std::make_pair(curr->vec[i], currstring));
+    }
+  }
+  
+  currstring = prefix;  
+  std::pair<MWTNode*, std::string> currPair;
+  while(!toCheck.empty()) {
+    currPair = toCheck.top();
+    toCheck.pop();  
+    for(int i=0; i < 27; i++) {
+      if(currPair.first->vec[i] != nullptr) {
+        currstring = currPair.second;
+        currstring += indexToChar(i);
+        toCheck.push(std::make_pair(currPair.first->vec[i],currstring));
+      }
+    }
+    if(currPair.first->isword) {
+      potWords.push(std::make_pair(currPair.first->freq, currPair.second));
+    }
+  }
+
+  for(int i=0; i < num_completions; i++) {
+    if(!potWords.empty()) {
+      words.push_back(potWords.top().second);
+      potWords.pop();
+    }
+    else { break; }
+  }
+
+  cout << "THE RESULTS FOR FINDING THE " << num_completions << " MOST FREQUENT WORDS STARTING W. " << prefix <<" \n";
+  for(int i=0; i<words.size(); i++) {
+    cout << words[i] << "\n";
+  }
 
 
 
+  return words;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
 
 
 // below is the actual thing
@@ -556,7 +590,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   cout << "that is all \n";
   return holder;
-
+*/
 
 
 
