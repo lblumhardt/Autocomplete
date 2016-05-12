@@ -317,9 +317,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     i++;
   }
   MWTNode* prefixNode = curr; 
-  max = prefixNode->maxfreq;
-  //cout << "the max we searching for is " << max << "\n";
-  //int limit = num_completions;
+  max = curr->maxfreq;
   std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
   
