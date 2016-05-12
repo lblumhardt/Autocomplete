@@ -56,8 +56,8 @@ int main() {
   //tst.insert("ea", 20);
   tst.insert("eastergorrilagram", 50000);
 
-  tst.predictCompletions("ea", 2);
-  //tst.predictCompletions("ba",2); 
+  tst.predictCompletions("ea", 3);
+  tst.predictCompletions("ba",2); 
   tst.predictCompletions("g", 100);
 /*  tst.insert("a", 1);
   tst.insert("ab", 1);

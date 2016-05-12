@@ -444,7 +444,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
  
   //exploring all the paths
   while(!paths.empty()) {
-    cout << "limit = " << limit << "\n";
+    //cout << "limit = " << limit << "\n";
     if(limit == 0) {
       break;
     }
@@ -452,7 +452,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     //paths, we have all the words we need and can break
     //WARNING IM NOT SURE if we WILL have enough words??????? 
     if(potWords.empty()) {
-      cout << "potWords is currently empty \n";
+      //cout << "potWords is currently empty \n";
     }
     else if(potWords.top().first > (*paths.begin()).first->maxfreq) {
       if(potWords.size() >= num_completions) { 
@@ -473,11 +473,11 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     currstring = tempPathPair.second;
 
     //check if p is a word
-    if(once) {
+   // if(once) {
       once = false;
       if(p->isword) {
         if(potWords.size() < num_completions) {
-          cout << "inserting " << currstring << " into potWords \n";
+          //cout << "inserting " << currstring << " into potWords \n";
           potWords.push(std::make_pair(p->freq, currstring));
    //         continue;
         }
@@ -485,7 +485,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
           tempPotWordsPair = potWords.top();
           if(p->freq == max) {
             firstMaxFound = true;
-            cout << "inserting " << currstring << " into potWords \n";
+            //cout << "inserting " << currstring << " into potWords \n";
             potWords.push(std::make_pair(p->freq, currstring));
             limit--;
             if(limit == 0) {
@@ -494,19 +494,19 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
             }
             auto tempPathPair2 = *(paths.begin());
             max = tempPathPair2.first->maxfreq;
-            cout << "supposedly found max. new max is " << max << "\n";
+            //cout << "supposedly found max. new max is " << max << "\n";
           //  continue;
           }
           //if this node's frequency is greater than the smallest freq in potWords
           else if(p->freq > tempPotWordsPair.first) {
             potWords.pop();
-            cout << "inserting " << currstring << " into potWords \n";
+            //cout << "inserting " << currstring << " into potWords \n";
             potWords.push(std::make_pair(p->freq, currstring));
            // continue;
           }
         }
       }
-    }
+   // }
     //for every child in this node
     for(int i=0; i < 27; i++) {
       //ignore null children
@@ -516,7 +516,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
       tempChar = indexToChar(i);
       currstring += tempChar;
       //if child is a word, compare its freq to max 
-      if(p->vec[i]->isword) {
+    /*  if(p->vec[i]->isword) {
         //if potential words is empty just slap this one in there
         if(potWords.size() < num_completions) {
           cout << "inserting " << currstring << " into potWords \n";
@@ -547,13 +547,9 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
             continue;
           }
         }
-      }
+      }*/
        //is this node an expandable path?
-      while(potWords.size() > num_completions) {
-        cout << "decreasing potWords size \n";
-        potWords.pop();
-      }
-      
+     
       //optimize this~!~!~!~
       if(p->vec[i]->maxfreq != 0) {
         if(paths.size() >= limit) {
@@ -561,17 +557,25 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
           backitr--;          
           auto smallpair = *backitr;
           if(p->vec[i]->maxfreq > (smallpair.first)->maxfreq) {
-            cout << "im deleting an item from paths \n";
+            //cout << "im deleting an item from paths \n";
             paths.erase(backitr);  
-            cout << "i'm inserting " << currstring << " into paths \n";
+            //cout << "i'm inserting " << currstring << " into paths \n";
             paths.insert(std::make_pair(p->vec[i], currstring));
           }
         }
         else { 
-          cout << "inserting " << currstring << " into paths\n";
+          //cout << "inserting " << currstring << " into paths\n";
           paths.insert(std::make_pair(p->vec[i], currstring));
         }
       }
+      else {
+        potWords.push(std::make_pair(p->vec[i]->freq, currstring));
+      }
+      while(potWords.size() > num_completions) {
+        //cout << "decreasing potWords size \n";
+        potWords.pop();
+      }
+      
     /* for(int j=0; j < 27; j++) {
         
      
