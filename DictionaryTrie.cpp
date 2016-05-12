@@ -31,7 +31,7 @@ bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, s
 //compare operator used in potWords priority queue. Should act as a min heap for 
 //frequencies
 bool DictionaryTrie::potWordsComp::operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2) {
-  return p1.first > p2.first;
+  return p1.first < p2.first;
 }
 
 
@@ -318,8 +318,8 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   MWTNode* prefixNode = curr; 
   max = prefixNode->maxfreq;
-  cout << "the max we searching for is " << max << "\n";
-  int limit = num_completions;
+  //cout << "the max we searching for is " << max << "\n";
+  //int limit = num_completions;
   std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
   
