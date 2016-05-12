@@ -34,8 +34,9 @@ bool DictionaryTrie::potWordsComp::operator()(std::pair<int,std::string> p1, std
   return p1.first < p2.first;
 } */
 
+
 bool DictionaryTrie::MWTNode::operator<(const MWTNode& other) {
-  return freq < other.freq;
+  return freq > other.freq;
 }
 
 DictionaryTrie::MWTNode::MWTNode(int freq){
@@ -47,6 +48,13 @@ DictionaryTrie::MWTNode::MWTNode(int freq){
     belowfreq = 0;
     maxfreq = 0;
   }
+
+bool DictionaryTrie::potWordsComp::operator()(const std::pair<MWTNode*, std::string>& p1,const std::pair<MWTNode*, std::string>& p2) const {
+  //cout << "think ive tried this b4 \n";  
+  return p1.first->freq < p2.first->freq;
+  //return *(p1.first) < *(p2.first);
+}
+
 
 /* Create a new Dictionary that uses a Trie back end */
 DictionaryTrie::DictionaryTrie() {
@@ -94,6 +102,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
       //cout << "pointer at index " << index << " was null \n";
       curr->vec[index] = new MWTNode(0);
       curr->vec[index]->parent = curr;
+      curr->vec[index]->freq = 0;
       curr->vec[index]->maxfreq = 0;
       curr->vec[index]->belowfreq = freq;
       curr = curr->vec[index];
@@ -112,7 +121,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   
   curr->isword = true;
   curr->freq = freq;
-  updateBelowFreq(curr);
+  //updateBelowFreq(curr);
   updateMaxFreq(curr);
   //curr->belowfreq = maxBelowFreq(curr);
   return true;
@@ -273,6 +282,7 @@ unsigned char DictionaryTrie::indexToChar(int index) {
   return (unsigned char)index + 97;
 }
 
+
 /* Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
@@ -320,12 +330,27 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     i++;
   }
   MWTNode* prefixNode = curr; 
+  //std::priority_queue<MWTNode*, std::vector<MWTNode*>, potWordsComp> pq;
+  
+  
+
+
+
+
+
+
+
+
+
+
+
   max = curr->maxfreq;
   std::priority_queue<std::pair<MWTNode*, std::string>, std::vector<std::pair<MWTNode*, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
   
   //check if prefix is one of the most frequent words
   if(curr->isword) {
+    cout << "putting " << prefix << " on the heap \n";
     potWords.push(std::make_pair(curr, prefix));
   }
 
@@ -350,12 +375,14 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
       }
     }
     if(currPair.first->isword) {
+      cout << "puting " << currPair.second << " on the heap \n";
       potWords.push(std::make_pair(currPair.first, currPair.second));
     }
   }
 
   for(int i=0; i < num_completions; i++) {
     if(!potWords.empty()) {
+      cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
       words.push_back(potWords.top().second);
       potWords.pop();
     }

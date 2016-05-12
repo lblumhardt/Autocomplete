@@ -19,8 +19,8 @@ int main() {
   if(tst.find("if it was made")) {
     cout << "nice we found apple \n";
   }  
-  tst.predictCompletions("for", 50);
-  tst.predictCompletions("app", 10);
+  tst.predictCompletions("for", 5);
+  tst.predictCompletions("app", 5);
 /*
 
   tst.insert("basketball", 5);

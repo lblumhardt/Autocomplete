@@ -6,6 +6,7 @@
 #ifndef DICTIONARY_TRIE_HPP
 #define DICTIONARY_TRIE_HPP
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include "TSTNode.cpp"
@@ -52,10 +53,7 @@ class DictionaryTrie
 
   class potWordsComp {
     public:
-      bool operator()(std::pair<MWTNode*, std::string> p1, std::pair<MWTNode*, std::string> p2) const {
-        
-        return p1.first < p2.first;
-      }
+      bool operator()(const std::pair<MWTNode*, std::string>& p1,const std::pair<MWTNode*, std::string>& p2) const;
 /*
       bool operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2); */
   };
