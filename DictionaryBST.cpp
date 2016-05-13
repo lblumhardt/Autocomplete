@@ -1,3 +1,4 @@
+/*Lucas Blumhardt A12020745 */
 //#include "util.hpp"
 #include "DictionaryBST.hpp"
 

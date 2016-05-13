@@ -50,67 +50,6 @@ DictionaryTrie::DictionaryTrie() {
  * invalid (empty string) */
 bool DictionaryTrie::insert(std::string word, unsigned int freq)
 {
- 
-/*
- if(word == "") {
-    cout << "Error: trying to insert an empty string \n";
-    return false;
-  }  
-
-  if(root == nullptr) {
-    root = new MWTNode(1);
-  } 
-  
-  MWTNode* curr = root;
-  unsigned char tempChar;
-  int currIndex;
-  for(int i=0; i<word.length(); i++) {
-    tempChar = word[i];
-    if(tempChar == 32) {
-      currIndex = 26;
-    }
-    else {
-      currIndex = (int)tempChar - 97;
-    }
-    if(curr->vec[currIndex] == nullptr) {
-      curr->vec[currIndex] = new MWTNode(1);
-      curr->vec[currIndex]->parent = curr;   
-    }
-    curr = curr->vec[currIndex];
-  }
-
-  if(curr->isword) {
-    return false;
-  }
-  else {
-    curr->isword = true;
-    curr->freq = freq;
-    return true;
-  }
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //check if string is empty
 
   if(word == "") {
@@ -164,8 +103,7 @@ bool DictionaryTrie::find(std::string word) const
   unsigned int i = 0;
   unsigned char temp;
   int index;
-  MWTNode* curr = root;
-  vector<MWTNode*> currvec;
+  MWTNode* curr = root; 
   if(root == nullptr) {
     return false;
   }
@@ -179,11 +117,10 @@ bool DictionaryTrie::find(std::string word) const
       index = temp - 97;
     }
     
-    currvec = curr->vec;
-    if(currvec[index] == nullptr) {
+    if(curr->vec[index] == nullptr) {
       return false;
     }
-    curr = currvec[index];
+    curr = curr->vec[index];
     i++;
   }  
   if(curr->isword) {
@@ -192,6 +129,7 @@ bool DictionaryTrie::find(std::string word) const
   return false;
 }
 
+//recursive helper to delete all nodes
 void DictionaryTrie::deleteAll(MWTNode* curr) {
   if(curr == nullptr) {
     return;
@@ -202,6 +140,7 @@ void DictionaryTrie::deleteAll(MWTNode* curr) {
   delete curr;
 }
 
+//helper I abandoned
 void DictionaryTrie::updateBelowFreq(MWTNode* curr) {
   int max = curr->belowfreq;
   for(int i = 0; i < 27; i++) {
@@ -220,6 +159,7 @@ void DictionaryTrie::updateBelowFreq(MWTNode* curr) {
   }
 }
 
+//helper I abandoned
 void DictionaryTrie::updateMaxFreq(MWTNode* curr) {
   int max = 0;
   for(int i=0; i<27; i++) {
@@ -244,6 +184,7 @@ void DictionaryTrie::updateMaxFreq(MWTNode* curr) {
 
 }
 
+//helper I abandoned
 //returns the maximum frequency of any word this node is a prefix of, including itself 
 //(if it is a word)
 int DictionaryTrie::maxBelowFreq(MWTNode* curr){
@@ -332,19 +273,12 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   //std::priority_queue<MWTNode*, std::vector<MWTNode*>, potWordsComp> pq;
 
   std::priority_queue<std::pair<int,string>, std::vector<std::pair<int, string>>, pairComp> potWords2;
-
   max = curr->maxfreq;
-  std::priority_queue<std::pair<MWTNode*, std::string>, std::vector<std::pair<MWTNode*, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
   bool aInserted = false;
   //check if prefix is one of the most frequent words
   if(curr->isword) {
-    cout << "putting " << prefix << " on the heap \n";
-    if(prefix == "a") {
-      aInserted = true;
-    }
     words_stored++;
-    potWords.push(std::make_pair(curr, prefix));
     potWords2.push(std::make_pair(curr->freq, prefix));
   }
 
@@ -363,54 +297,40 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   while(!toCheck.empty()) {
     currPair = toCheck.top();
     if(currPair.first->visited == false) {
-    toCheck.pop();  
-    //add current node's children to the stack
-    for(int i=0; i < 27; i++) {
-      if(currPair.first->vec[i] != nullptr) {
-        currstring = currPair.second;
-        currstring += indexToChar(i);
-        toCheck.push(std::make_pair(currPair.first->vec[i],currstring));
+      toCheck.pop();  
+      //add current node's children to the stack
+      for(int i=0; i < 27; i++) {
+        if(currPair.first->vec[i] != nullptr) {
+          currstring = currPair.second;
+          currstring += indexToChar(i);
+          toCheck.push(std::make_pair(currPair.first->vec[i],currstring));
+        }
       }
-    }
-    //check if current node is a word to put into the max heap
-    if(currPair.first->isword) {
-      //cout << "puting " << currPair.second << " on the heap \n";
-      if(currPair.second == "a") {
-        aInserted = true;
+      //check if current node is a word to put into the max heap
+      if(currPair.first->isword) { 
+        words_stored++;
+        potWords2.push(std::make_pair(currPair.first->freq, currPair.second));
       }
-      words_stored++;
-      potWords.push(std::make_pair(currPair.first, currPair.second));
-      potWords2.push(std::make_pair(currPair.first->freq, currPair.second));
+      currPair.first->visited = true;
     }
-    currPair.first->visited = true;
   }
-  }
-  cout << "WE HAVE STORED " << words_stored << " WORDS IN HEAP \n";
 
   //take the top num_completion words out of the heap
   for(int i=0; i < num_completions; i++) {
     if(!potWords2.empty()) {
-      //cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
       words.push_back(potWords2.top().second);
       potWords2.pop();
     }
     else { break; }
   }
-
-  cout << "THE RESULTS FOR FINDING THE " << num_completions << " MOST FREQUENT WORDS STARTING W. " << prefix <<" \n";
-  for(int i=0; i<words.size(); i++) {
-    cout << words[i] << "\n";
-  }
-  
-  if(aInserted) {
-    cout << "and a WAS inserted btw :P \n";
-  }
   return words;
 
 /*
+This is the algorithm Charles taught in a tutor sesh. Or at least close to it. i thought I implemented
+his alg. exactly, but there were things I couldn't debug. I changed the alg. little by little until I 
+completely abandoned it. I decided just to go with a naive solution to earn more than 0 points, however
+after two days of debugging I can't figure out what's wrong with my solution anyway.
 
-
-// below is the actual thing
   //pq holds the potential Words. it's a min heap of frequencies
   std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
 
@@ -467,14 +387,6 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     }  
   }
 
-
-
-
-
-
-
-
-
   //remove minimum values while size is greater than limit
   while(paths.size() > limit) {
     auto deleteitr = paths.end();
@@ -489,15 +401,10 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     quickitr++;
     cout << "QUICKITR:   " << pairry.second << "\n";
   } 
-
-
   //remove min values from potWords while size is greater than num_completions
   while(potWords.size() > num_completions) {
     potWords.pop();
   }
-
-
-
 
   //had a hard time figuring out a fix. this bool is just so one part of the while loop
   //will only be executed once. explanation once it works
