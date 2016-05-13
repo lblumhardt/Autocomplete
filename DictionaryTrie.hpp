@@ -35,6 +35,7 @@ class DictionaryTrie
     MWTNode* parent;
     unsigned int freq;
     bool isword;
+    bool visited;
     int belowfreq;
     int maxfreq;
 
@@ -92,8 +93,6 @@ public:
   ~DictionaryTrie();
 
   void deleteAll(MWTNode* curr);
-
-  bool recursiveInsert(std::string word, unsigned int freq, TSTNode* root);
 
   int maxBelowFreq(MWTNode* curr);
 

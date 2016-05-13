@@ -9,8 +9,7 @@
 
 int main(int argc, char *argv[]) {
   
-  int n = 100;
-
+  int n = 1000;
   if(argc != 5 ) {
     cout << "Wrong number of arguments! \n";
     return -1;
@@ -46,14 +45,11 @@ int main(int argc, char *argv[]) {
       mwt.find("asjfosidj");
       averageTime = averageTime + timer.end_timer();
     }
-    averageTime = averageTime/n;
-    
+    averageTime = averageTime/n;  
     cout << min_size + i*step_size << "\t" << averageTime << "\n";
   }
   
-
   cout << "DictionaryBST \n";
-
   for(int i=0; i < num_iterations; i++) {
     DictionaryBST bst;
     Utils::load_dict(bst, input, min_size + i*step_size);
@@ -74,13 +70,11 @@ int main(int argc, char *argv[]) {
       bst.find("asjfosidj");
       averageTime = averageTime + timer.end_timer();
     }
-    averageTime = averageTime/n;
-    
+    averageTime = averageTime/n; 
     cout << min_size + i*step_size << "\t" << averageTime << "\n";
   }
 
   cout << "DictionaryHashtable \n";
-
   for(int i=0; i < num_iterations; i++) {
     DictionaryHashtable ht;
     Utils::load_dict(ht, input, min_size + i*step_size);
@@ -101,12 +95,8 @@ int main(int argc, char *argv[]) {
       ht.find("asjfosidj");
       averageTime = averageTime + timer.end_timer();
     }
-    averageTime = averageTime/n;
-    
+    averageTime = averageTime/n; 
     cout << min_size + i*step_size << "\t" << averageTime << "\n";
   }
-
-
-
   return 1;
 }

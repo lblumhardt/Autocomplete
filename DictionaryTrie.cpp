@@ -11,14 +11,12 @@ bool DictionaryTrie::pairComp::operator()(std::pair<int,string> p1, std::pair<in
   //cout << "I'm saying " << p1.first << " < " << p2.first << " is what im comparing \n";
   int p1freq = p1.first;
   int p2freq = p2.first;
-  if(p1freq == p2freq) {
-    return p2.second < p1.second;
-  }
   return p1freq < p2freq;
 }
 
 //compare operator going on in the paths double priority queue. Compares nodes'
 //max frequencies
+/*
 bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2) {
   if(p1.first->maxfreq == 0 && p2.first->maxfreq == 0) {
     return p1.first->freq > p2.first->freq;
@@ -31,7 +29,7 @@ bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, s
   }
   return p1.first->maxfreq > p2.first->maxfreq;
 }
-
+*/
 /*
 //compare operator used in potWords priority queue. Should act as a min heap for 
 //frequencies
@@ -52,6 +50,7 @@ DictionaryTrie::MWTNode::MWTNode(int freq){
     freq = 0;
     belowfreq = 0;
     maxfreq = 0;
+    visited = false;
   }
 
 bool DictionaryTrie::potWordsComp::operator()(const std::pair<MWTNode*, std::string>& p1,const std::pair<MWTNode*, std::string>& p2) const {
@@ -77,7 +76,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     cout << "attempting to insert an empty string. Returning false \n";
     return false;
   }
-
+  std::string build = "";
   unsigned int i = 0;
   unsigned char temp;
   int index;
@@ -98,6 +97,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     else {
       index = temp - 97;
     }
+    build += temp;
     if(curr->vec[index] == nullptr) {
       //cout << "pointer at index " << index << " was null \n";
       curr->vec[index] = new MWTNode(0);
@@ -118,19 +118,14 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   if(curr->isword) {
     return false;
   }
-  
+  if(build == "a") {
+    cout << "I inserted a and it is now a word \n";
+  }
   curr->isword = true;
   curr->freq = freq;
   //updateBelowFreq(curr);
   updateMaxFreq(curr);
   //curr->belowfreq = maxBelowFreq(curr);
-  return true;
-}
-
-
-
-bool DictionaryTrie::recursiveInsert(std::string word, unsigned int freq, TSTNode* root) {
-
   return true;
 }
 
@@ -248,33 +243,9 @@ int DictionaryTrie::maxBelowFreq(MWTNode* curr){
   }
   
   return max;
-/*
-  bool was = true; 
-  int max = curr->freq;
-  for(int i=0; i < 27; i++) {
-    if(curr->vec[i]) {
-      if(max < curr->vec[i]->belowfreq) {
-        was = false;
-        max = curr->vec[i]->belowfreq;
-      }
-    }
-  }
-  if(was) {
-    cout << "max = " << max << " and was determined by curr frequency \n";
-  }
-  else {
-    cout << "max = " << max << " and was determined by a different belowfreq \n";
-  }
-  while(curr!=root) {
-    if(curr->belowfreq < max) {
-      curr->belowfreq = max;
-      curr = curr->parent;
-    }
-    else { break; }
-  }
-  return max; */
 }
 
+//helper method to take vec's index and represent it as a-z
 unsigned char DictionaryTrie::indexToChar(int index) {
   if(index == 26) {
     return (unsigned char)32;
@@ -309,7 +280,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   unsigned int index; 
   unsigned char temp;
   int max;  
-
+  int words_stored = 0;
   //Finding prefix node
   while(i < prefix.length()) {
     temp = prefix[i]; 
@@ -331,31 +302,25 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   MWTNode* prefixNode = curr; 
   //std::priority_queue<MWTNode*, std::vector<MWTNode*>, potWordsComp> pq;
-  
-  
-
-
-
-
-
 
   std::priority_queue<std::pair<int,string>, std::vector<std::pair<int, string>>, pairComp> potWords2;
-
-
-
 
   max = curr->maxfreq;
   std::priority_queue<std::pair<MWTNode*, std::string>, std::vector<std::pair<MWTNode*, std::string>>, potWordsComp> potWords;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
-  
+  bool aInserted = false;
   //check if prefix is one of the most frequent words
   if(curr->isword) {
     cout << "putting " << prefix << " on the heap \n";
+    if(prefix == "a") {
+      aInserted = true;
+    }
+    words_stored++;
     potWords.push(std::make_pair(curr, prefix));
     potWords2.push(std::make_pair(curr->freq, prefix));
   }
 
-
+  //add prefix node's children to the stack 
   for(int i=0; i < 27; i++) {
     if(curr->vec[i] != nullptr) {
       currstring = prefix;
@@ -364,11 +329,14 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     }
   }
   
+  //go through the stack
   currstring = prefix;  
   std::pair<MWTNode*, std::string> currPair;
   while(!toCheck.empty()) {
     currPair = toCheck.top();
+    if(currPair.first->visited == false) {
     toCheck.pop();  
+    //add current node's children to the stack
     for(int i=0; i < 27; i++) {
       if(currPair.first->vec[i] != nullptr) {
         currstring = currPair.second;
@@ -376,13 +344,22 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
         toCheck.push(std::make_pair(currPair.first->vec[i],currstring));
       }
     }
+    //check if current node is a word to put into the max heap
     if(currPair.first->isword) {
       //cout << "puting " << currPair.second << " on the heap \n";
+      if(currPair.second == "a") {
+        aInserted = true;
+      }
+      words_stored++;
       potWords.push(std::make_pair(currPair.first, currPair.second));
       potWords2.push(std::make_pair(currPair.first->freq, currPair.second));
     }
+    currPair.first->visited = true;
   }
+  }
+  cout << "WE HAVE STORED " << words_stored << " WORDS IN HEAP \n";
 
+  //take the top num_completion words out of the heap
   for(int i=0; i < num_completions; i++) {
     if(!potWords2.empty()) {
       //cout << "confirming that we are putting this in the toReturn pile: " << potWords.top().second << "\n";
@@ -396,9 +373,10 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   for(int i=0; i<words.size(); i++) {
     cout << words[i] << "\n";
   }
-
-
-
+  
+  if(aInserted) {
+    cout << "and a WAS inserted btw :P \n";
+  }
   return words;
 
 /*
