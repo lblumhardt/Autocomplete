@@ -50,7 +50,9 @@ DictionaryTrie::DictionaryTrie() {
  * invalid (empty string) */
 bool DictionaryTrie::insert(std::string word, unsigned int freq)
 {
-  if(word == "") {
+ 
+/*
+ if(word == "") {
     cout << "Error: trying to insert an empty string \n";
     return false;
   }  
@@ -88,6 +90,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
 
 
 
+*/
 
 
 
@@ -98,7 +101,6 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
 
 
 
-/*
 
 
 
@@ -152,7 +154,7 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
   curr->isword = true;
   curr->freq = freq;
   updateMaxFreq(curr);
-  return true; */
+  return true; 
 }
 
 
