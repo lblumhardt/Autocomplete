@@ -1,4 +1,6 @@
-//#include "util.hpp"
+/*Lucas Blumhardt A12020745
+ * This is a Multiway Trie that holds words inserted into it from a dictionary
+ * */
 #include "DictionaryTrie.hpp"
 #include <set>
 #include <stack>
@@ -7,41 +9,19 @@
 #include <queue>
 #include <utility>
 
+//comparator used by potWords2 in predictCompletions
 bool DictionaryTrie::pairComp::operator()(std::pair<int,string> p1, std::pair<int, string> p2) const{
-  //cout << "I'm saying " << p1.first << " < " << p2.first << " is what im comparing \n";
   int p1freq = p1.first;
   int p2freq = p2.first;
   return p1freq < p2freq;
 }
-
-//compare operator going on in the paths double priority queue. Compares nodes'
-//max frequencies
-/*
-bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2) {
-  if(p1.first->maxfreq == 0 && p2.first->maxfreq == 0) {
-    return p1.first->freq > p2.first->freq;
-  }
-  if(p1.first->maxfreq == 0) {
-    return p1.first->freq > p2.first->maxfreq;
-  }
-  if(p2.first->maxfreq == 0) {
-    return p1.first->maxfreq > p2.first->freq;
-  }
-  return p1.first->maxfreq > p2.first->maxfreq;
-}
-*/
-/*
-//compare operator used in potWords priority queue. Should act as a min heap for 
-//frequencies
-bool DictionaryTrie::potWordsComp::operator()(std::pair<int,std::string> p1, std::pair<int,std::string> p2) {
-  return p1.first < p2.first;
-} */
 
 
 bool DictionaryTrie::MWTNode::operator<(const MWTNode& other) {
   return freq > other.freq;
 }
 
+//Multiway Trie Node class
 DictionaryTrie::MWTNode::MWTNode(int freq){
     for(int i=0; i<27; i++) {
       vec[i] = (MWTNode*)0;
@@ -53,10 +33,9 @@ DictionaryTrie::MWTNode::MWTNode(int freq){
     visited = false;
   }
 
+//comparator used by potWords
 bool DictionaryTrie::potWordsComp::operator()(const std::pair<MWTNode*, std::string>& p1,const std::pair<MWTNode*, std::string>& p2) const {
-  //cout << "think ive tried this b4 \n";  
   return p1.first->freq < p2.first->freq;
-  //return *(p1.first) < *(p2.first);
 }
 
 
@@ -71,21 +50,77 @@ DictionaryTrie::DictionaryTrie() {
  * invalid (empty string) */
 bool DictionaryTrie::insert(std::string word, unsigned int freq)
 {
-  //check if string is empty
+  if(word == "") {
+    cout << "Error: trying to insert an empty string \n";
+    return false;
+  }  
+
+  if(root == nullptr) {
+    root = new MWTNode(1);
+  } 
+  
+  MWTNode* curr = root;
+  unsigned char tempChar;
+  int currIndex;
+  for(int i=0; i<word.length(); i++) {
+    tempChar = word[i];
+    if(tempChar == 32) {
+      currIndex = 26;
+    }
+    else {
+      currIndex = (int)tempChar - 97;
+    }
+    if(curr->vec[currIndex] == nullptr) {
+      curr->vec[currIndex] = new MWTNode(1);
+      curr->vec[currIndex]->parent = curr;   
+    }
+    curr = curr->vec[currIndex];
+  }
+
+  if(curr->isword) {
+    return false;
+  }
+  else {
+    curr->isword = true;
+    curr->freq = freq;
+    return true;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+//check if string is empty
+
   if(word == "") {
     cout << "attempting to insert an empty string. Returning false \n";
     return false;
   }
-  std::string build = "";
   unsigned int i = 0;
   unsigned char temp;
   int index;
-  //vector<MWTNode*> currvec;
   MWTNode* curr;
-  //trying MWTrie now 
   if(root == nullptr) {
     root = new MWTNode(0);
-    //cout << "root was null \n";
   }
   curr = root; 
   while(i < word.length()) {
@@ -97,36 +132,27 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq)
     else {
       index = temp - 97;
     }
-    build += temp;
     if(curr->vec[index] == nullptr) {
-      //cout << "pointer at index " << index << " was null \n";
       curr->vec[index] = new MWTNode(0);
       curr->vec[index]->parent = curr;
       curr->vec[index]->freq = 0;
       curr->vec[index]->maxfreq = 0;
       curr->vec[index]->belowfreq = freq;
       curr = curr->vec[index];
-      //curr->belowfreq = maxBelowFreq(curr);
       i++;
       continue;
     }
-    //curr->vec[index]->belowfreq = maxBelowFreq(curr->vec[index]);
     curr = curr->vec[index];
-    //curr->belowfreq = maxBelowFreq(curr);
     i++; 
   } 
   if(curr->isword) {
     return false;
   }
-  if(build == "a") {
-    cout << "I inserted a and it is now a word \n";
-  }
+
   curr->isword = true;
   curr->freq = freq;
-  //updateBelowFreq(curr);
   updateMaxFreq(curr);
-  //curr->belowfreq = maxBelowFreq(curr);
-  return true;
+  return true; */
 }
 
 
