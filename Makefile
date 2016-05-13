@@ -16,8 +16,8 @@ DictionaryHashtable.o: DictionaryHashtable.hpp
 
 util.o: util.hpp
 
-benchdict.o: benchdict.cpp
-	g++ -g -Wall -std=c++11 -o benchdict benchdict.cpp
+benchdict.o: benchdict.cpp 
+	g++ -std=c++11 -g -Wall benchdict.cpp -o benchdict 
 
 checkpointTester.o: checkpointTester.cpp
 	g++ -g -Wall -std=c++11 checkpointTester.cpp 

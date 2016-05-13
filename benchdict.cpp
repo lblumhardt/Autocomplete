@@ -1,8 +1,8 @@
 /* Lucas Blumhardt A12020745 */
-#include "util.cpp"
-#include "DictionaryTrie.cpp"
-#include "DictionaryHashtable.cpp"
-#include "DictionaryBST.cpp"
+#include "util.hpp"
+#include "DictionaryTrie.hpp"
+#include "DictionaryHashtable.hpp"
+#include "DictionaryBST.hpp"
 #include <fstream>
 #include <sstream>
 
