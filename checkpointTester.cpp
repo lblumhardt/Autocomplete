@@ -14,7 +14,7 @@ int main() {
   DictionaryHashtable hashtable; 
 
   DictionaryBST bst;
-/*
+
   tst.insert("apple", 500);
   tst.insert("appliance",10);
   tst.insert("adorn", 11);
@@ -40,16 +40,24 @@ int main() {
   tst.insert("oregano",31);
   tst.insert("an apple",32);
   tst.insert("arctic",33);
-  tst.insert("aloud", 34);
+  tst.insert("aloudj", 34);
+  tst.insert("aloudh", 35);
+  tst.insert("aloudg", 36);
+  tst.insert("aloudf", 37);
+  tst.insert("aloude", 38);
+  tst.insert("aloudd", 39);
+  tst.insert("aloudc", 40);
+  tst.insert("aloudb", 41);
+  tst.insert("alouda", 42);
 
-*/
 
 
-  Utils::load_dict(tst, input);
+
+//  Utils::load_dict(tst, input);
   cout << "inserting went fine \n"; 
-  if(tst.find("if it was made")) {
-    cout << "nice we found apple \n";
-  }  
+//  if(tst.find("if it was made")) {
+  //  cout << "nice we found apple \n";
+//  }  
   tst.predictCompletions("a", 10);
   //tst.predictCompletions("z", 10);
 /*
