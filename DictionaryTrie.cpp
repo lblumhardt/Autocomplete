@@ -282,7 +282,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   MWTNode* prefixNode = curr; 
   //std::priority_queue<MWTNode*, std::vector<MWTNode*>, potWordsComp> pq;
-/*
+
   std::priority_queue<std::pair<int,string>, std::vector<std::pair<int, string>>, pairComp> potWords2;
   max = curr->maxfreq;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
@@ -335,13 +335,13 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     else { break; }
   }
   return words;
-*/
+
 /*
 This is the algorithm Charles taught in a tutor sesh. Or at least close to it. i thought I implemented
 his alg. exactly, but there were things I couldn't debug. I changed the alg. little by little until I 
 completely abandoned it. I decided just to go with a naive solution to earn more than 0 points, however
 after two days of debugging I can't figure out what's wrong with my solution anyway.
-*/
+*/ /*
   //pq holds the potential Words. it's a min heap of frequencies
   std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, pairComp> potWords;
 
@@ -546,7 +546,7 @@ after two days of debugging I can't figure out what's wrong with my solution any
   cout << "that is all \n";
   return holder;
 
-
+*/
 
 
 /* Deal with this later. this currently returns THE max word regardless of what 
