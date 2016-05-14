@@ -356,7 +356,7 @@ after two days of debugging I can't figure out what's wrong with my solution any
   //cout << "checking if prefix is a word \n";
   if(curr->isword) {
     if(curr->maxfreq < curr->freq) {
-      cout << "putting the prefix in potwords too \n";
+      //cout << "putting the prefix in potwords too \n";
       potWords.push(std::make_pair(curr->freq, prefix));
       limit--;
       if(limit == 0) {
@@ -365,7 +365,7 @@ after two days of debugging I can't figure out what's wrong with my solution any
       }
     }
     else { 
-      cout << "putting the prefix in potwords too \n";
+      //cout << "putting the prefix in potwords too \n";
       potWords.push(std::make_pair(curr->freq, prefix));
     }
   }
@@ -386,7 +386,6 @@ after two days of debugging I can't figure out what's wrong with my solution any
     
       //if the child is a leaf node, add to potential words (could be optimized)
       if(curr->vec[i]->maxfreq == 0) {
-        //cout << "pushing " << currstring << " onto potWords \n";
         potWords.push(std::make_pair(curr->vec[i]->freq, currstring));
         continue;
       }
@@ -405,21 +404,12 @@ after two days of debugging I can't figure out what's wrong with my solution any
     //cout << "im deleting an item from paths \n";
     paths.erase(deleteitr);  
   }
-  auto quickitr = paths.begin();
-  cout << "checking what's in paths after deleting \n";
-  for(int i=0; i<paths.size(); i++) {
-    auto pairry = *quickitr;
-    quickitr++;
-    cout << "QUICKITR:   " << pairry.second << "\n";
-  } 
+   
   //remove min values from potWords while size is greater than num_completions
   while(potWords.size() > num_completions) {
     potWords.pop();
   }
 
-  //had a hard time figuring out a fix. this bool is just so one part of the while loop
-  //will only be executed once. explanation once it works
-  bool once = true;
   bool firstMaxFound = false;
 
   MWTNode* p;
@@ -427,7 +417,6 @@ after two days of debugging I can't figure out what's wrong with my solution any
  
   //exploring all the paths
   while(!paths.empty()) {
-    //cout << "limit = " << limit << "\n";
     if(limit == 0) {
       break;
     }
@@ -435,20 +424,15 @@ after two days of debugging I can't figure out what's wrong with my solution any
     //paths, we have all the words we need and can break
     //WARNING IM NOT SURE if we WILL have enough words??????? 
     if(potWords.empty()) {
-      //cout << "potWords is currently empty \n";
+      //hi :^)
     }
     else if(potWords.top().first > (*paths.begin()).first->maxfreq) {
       if(potWords.size() >= num_completions) { 
         if(firstMaxFound) {
-          cout << "we broke in optimization #1 \n";
           break;
         }
       }
-    }
-    //cout << "potWords.top().first = " << potWords.top().first << "\n";
-    //cout << "(*paths.begin()).first->maxfreq = " << (*paths.begin()).first->maxfreq << "\n";
-    //cout << "no its not \n";
-    
+    }    
 
     tempPathPair = *(paths.begin());
     paths.erase(paths.begin());
@@ -456,40 +440,30 @@ after two days of debugging I can't figure out what's wrong with my solution any
     currstring = tempPathPair.second;
 
     //check if p is a word
-   // if(once) {
-      once = false;
       if(p->isword) {
         if(potWords.size() < num_completions) {
-          //cout << "inserting " << currstring << " into potWords \n";
           potWords.push(std::make_pair(p->freq, currstring));
-   //         continue;
         }
         else {
           tempPotWordsPair = potWords.top();
           if(p->freq == max) {
             firstMaxFound = true;
-            //cout << "inserting " << currstring << " into potWords \n";
             potWords.push(std::make_pair(p->freq, currstring));
             limit--;
             if(limit == 0) {
-              cout << "we broke in optimization #2 \n";
               break;
             }
             auto tempPathPair2 = *(paths.begin());
             max = tempPathPair2.first->maxfreq;
-            //cout << "supposedly found max. new max is " << max << "\n";
-          //  continue;
           }
           //if this node's frequency is greater than the smallest freq in potWords
           else if(p->freq > tempPotWordsPair.first) {
             potWords.pop();
-            //cout << "inserting " << currstring << " into potWords \n";
             potWords.push(std::make_pair(p->freq, currstring));
-           // continue;
           }
         }
       }
-   // }
+
     //for every child in this node
     for(int i=0; i < 27; i++) {
       //ignore null children
@@ -500,8 +474,6 @@ after two days of debugging I can't figure out what's wrong with my solution any
       currstring += tempChar;
 
       //is this node an expandable path?
-     
-      //optimize this~!~!~!~
       if(p->vec[i]->maxfreq != 0) {
         if(paths.size() >= limit) {
           auto backitr = paths.end();
@@ -523,7 +495,6 @@ after two days of debugging I can't figure out what's wrong with my solution any
         potWords.push(std::make_pair(p->vec[i]->freq, currstring));
       }
       while(potWords.size() > num_completions) {
-        //cout << "decreasing potWords size \n";
         potWords.pop();
       }
       currstring.pop_back(); 
@@ -537,13 +508,7 @@ after two days of debugging I can't figure out what's wrong with my solution any
     potWords.pop();
     i++;
   }  
-  std::reverse(holder.begin(), holder.end());
-
-  cout << "FINAL RESULTS FOR TOP " << num_completions << " words starting w/ " << prefix << "\n";
-  for(int i=0; i<holder.size(); i++) {
-    cout << holder[i] << " \n";
-  }
-  cout << "that is all \n";
+  std::reverse(holder.begin(), holder.end()); 
   return holder;
 
 
