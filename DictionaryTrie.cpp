@@ -13,7 +13,7 @@
 bool DictionaryTrie::pairComp::operator()(std::pair<int,string> p1, std::pair<int, string> p2) const{
   int p1freq = p1.first;
   int p2freq = p2.first;
-  return p1freq < p2freq;
+  return p1freq > p2freq;
 }
 
 
@@ -37,6 +37,10 @@ DictionaryTrie::MWTNode::MWTNode(int freq){
 bool DictionaryTrie::potWordsComp::operator()(const std::pair<MWTNode*, std::string>& p1,const std::pair<MWTNode*, std::string>& p2) const {
   return p1.first->freq < p2.first->freq;
 }
+
+bool DictionaryTrie::pathsComp::operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2) const{
+  return p1.first->maxfreq > p2.first->maxfreq;
+} 
 
 
 /* Create a new Dictionary that uses a Trie back end */
@@ -164,8 +168,15 @@ void DictionaryTrie::updateMaxFreq(MWTNode* curr) {
   int max = 0;
   for(int i=0; i<27; i++) {
     if(curr->vec[i] != nullptr) {
-      if(max < curr->vec[i]->maxfreq) {
-        max = curr->vec[i]->maxfreq;
+      if(curr->vec[i]->freq < curr->vec[i]->maxfreq) {
+        if(max < curr->vec[i]->maxfreq) {
+          max = curr->vec[i]->maxfreq;
+        }
+      }
+      else {
+        if(max < curr->vec[i]->freq) {
+          max = curr->vec[i]->freq;
+        }
       }
     }
   }
@@ -243,7 +254,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   if(num_completions <= 0) {
     return words;
   }  
-
+  int limit = num_completions;
   unsigned int i = 0;
   MWTNode* curr = root;
   unsigned int index; 
@@ -271,7 +282,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
   }
   MWTNode* prefixNode = curr; 
   //std::priority_queue<MWTNode*, std::vector<MWTNode*>, potWordsComp> pq;
-
+/*
   std::priority_queue<std::pair<int,string>, std::vector<std::pair<int, string>>, pairComp> potWords2;
   max = curr->maxfreq;
   std::stack<std::pair<MWTNode*,std::string>> toCheck;
@@ -324,15 +335,15 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
     else { break; }
   }
   return words;
-
+*/
 /*
 This is the algorithm Charles taught in a tutor sesh. Or at least close to it. i thought I implemented
 his alg. exactly, but there were things I couldn't debug. I changed the alg. little by little until I 
 completely abandoned it. I decided just to go with a naive solution to earn more than 0 points, however
 after two days of debugging I can't figure out what's wrong with my solution anyway.
-
+*/
   //pq holds the potential Words. it's a min heap of frequencies
-  std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, potWordsComp> potWords;
+  std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, pairComp> potWords;
 
   //double pq of the potential pathways to the nodes. it's a min/max heap 
   //of frequencies
@@ -534,7 +545,7 @@ after two days of debugging I can't figure out what's wrong with my solution any
   }
   cout << "that is all \n";
   return holder;
-*/
+
 
 
 

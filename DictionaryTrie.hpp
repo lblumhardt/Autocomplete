@@ -48,7 +48,7 @@ class DictionaryTrie
   class pathsComp {
     public:
     
-      bool operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2);
+      bool operator()(std::pair<MWTNode*,std::string> p1, std::pair<MWTNode*,std::string> p2) const;
   };
 
 

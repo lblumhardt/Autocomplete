@@ -14,6 +14,37 @@ int main() {
   DictionaryHashtable hashtable; 
 
   DictionaryBST bst;
+/*
+  tst.insert("apple", 500);
+  tst.insert("appliance",10);
+  tst.insert("adorn", 11);
+  tst.insert("acorn", 12);
+  tst.insert("axe", 13);
+  tst.insert("a", 14);
+  tst.insert("ass", 15);
+  tst.insert("blame",16);
+  tst.insert("anxious",17);
+  tst.insert("all the small things",18);
+  tst.insert("all around the",19);
+  tst.insert("all together",20);
+  tst.insert("auspicious",21);
+  tst.insert("a gorrillabomb",22);
+  tst.insert("ancestor",23);
+  tst.insert("ancient ancestor",24);
+  tst.insert("afruitful",25);
+  tst.insert("a dastardly foe",26);
+  tst.insert("alarming rate",27);
+  tst.insert("a decisive role",28);
+  tst.insert("archk",29);
+  tst.insert("aaaahhhhhh",30);
+  tst.insert("oregano",31);
+  tst.insert("an apple",32);
+  tst.insert("arctic",33);
+  tst.insert("aloud", 34);
+
+*/
+
+
   Utils::load_dict(tst, input);
   cout << "inserting went fine \n"; 
   if(tst.find("if it was made")) {
